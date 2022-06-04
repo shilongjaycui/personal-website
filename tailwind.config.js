@@ -8,7 +8,7 @@ module.exports = {
         'piazzolla': ['"Piazzolla"', 'serif']
       },
       backgroundImage: {
-        'stroke': "url('/src/images/home/stroke.png')",
+        'stroke': "url('/src/images/home/stroke.png')",  // downloaded from https://www.vhv.rs/viewpic/hbihbTJ_black-brush-stroke-png-transparent-png/
       }
     },
   },
