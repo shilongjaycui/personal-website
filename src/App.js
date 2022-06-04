@@ -5,7 +5,7 @@ function App() {
   return (
     <div className="text-center">
       <div className="min-h-screen bg-red-800">
-        Header
+        This is your personal website's header.
       </div>
       {/* <header className="bg-slate-600 min-h-screen flex flex-col items-center justify-center text-white">
         <img src={logo} className="opacity-50 h-96" alt="logo" />
