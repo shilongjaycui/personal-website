@@ -4,7 +4,10 @@ import './App.css';
 function App() {
   return (
     <div className="text-center">
-      <header className="App-header">
+      <div className="min-h-screen bg-red-800">
+        Header
+      </div>
+      {/* <header className="bg-slate-600 min-h-screen flex flex-col items-center justify-center text-white">
         <img src={logo} className="opacity-50 h-96" alt="logo" />
         <p>
           Edit <code className='text-black' >src/App.js</code> and save to reload.
@@ -17,7 +20,7 @@ function App() {
         >
           Learn React
         </a>
-      </header>
+      </header> */}
     </div>
   );
 }
