@@ -1,4 +1,5 @@
 import React from 'react';
+import DropdownItem from './DropdownItem';
 import NavItem from './NavItem';
 
 export default function Header() {
@@ -7,7 +8,8 @@ export default function Header() {
             <h1 className="w-64 h-16 font-piazzolla text-white text-6xl font-bold hover:uppercase">Jay Cui</h1>
             <NavItem label='About'/>
             <NavItem label='Blog' url='https://medium.com/@shilongjaycui'/>
-            <NavItem label='Projects↓'/>
+            {/* <NavItem label='Projects↓'/> */}
+            <DropdownItem label='Music'/>
             <NavItem label='LinkedIn' url='https://www.linkedin.com/in/shilongjaycui/'/>
             <NavItem label='GitHub' url='https://github.com/shilongjaycui'/>
             <NavItem label='Resume'/>
