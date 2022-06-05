@@ -1,6 +1,7 @@
 import React from 'react';
 import CollapsibleNavItem from './CollapsibleNavItem';
 import NavItem from './NavItem';
+import resume from '../jay_cui_spring_2022.pdf';
 
 export default function Header() {
     return (
@@ -11,7 +12,7 @@ export default function Header() {
             <CollapsibleNavItem label='Projects' items={['Music', 'Dating', 'Reading']}/>
             <NavItem label='LinkedIn' url='https://www.linkedin.com/in/shilongjaycui/'/>
             <NavItem label='GitHub' url='https://github.com/shilongjaycui'/>
-            <NavItem label='Resume'/>
+            <NavItem label='Resume' url={resume}/>
         </div>
     )
 }
