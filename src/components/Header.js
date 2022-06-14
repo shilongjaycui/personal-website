@@ -7,7 +7,9 @@ import { Link } from "react-router-dom";
 export default function Header() {
     return (
         <div className="flex items-center p-4 h-40 bg-red-800 shadow-2xl shadow-black opacity-95">
-            <h1 className="w-64 h-16 font-piazzolla text-center text-white text-6xl font-bold hover:uppercase">Jay Cui</h1>
+            <Link to="/">
+                <h1 className="w-64 h-16 font-piazzolla text-center text-white text-6xl font-bold hover:text-black">Jay Cui</h1>
+            </Link>
             <Link to="/about">
                 <NavItem label='About'/>
             </Link>

@@ -9,9 +9,9 @@ export default function CollapsibleNavItem(props) {
         <div className="relative">
             <div 
                 className="flex justify-center items-center
-                    w-56 h-24
+                    w-48 h-24
                     font-piazzolla text-white text-3xl
-                    hover:bg-stroke bg-local"
+                    hover:bg-stroke hover:bg-local"
                 {...getToggleProps()}
             >
                 {props.label}
