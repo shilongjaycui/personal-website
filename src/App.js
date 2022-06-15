@@ -6,7 +6,7 @@ function App() {
   return (
     <div>
       <Header />
-      <img src={cyborg_commando} alt={'大佬'}/>
+      <img src={cyborg_commando} alt={'大佬'} className="w-screen"/>
     </div>
   );
 }
