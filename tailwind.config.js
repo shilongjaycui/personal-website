@@ -9,13 +9,13 @@ module.exports = {
       },
       backgroundImage: {
         'stroke': "url('/src/images/home/stroke.png')",  // downloaded from https://www.vhv.rs/viewpic/hbihbTJ_black-brush-stroke-png-transparent-png/
+        'cyborg_commando': "url('/src/images/home/cyborg_commando.png')",
       }
     },
     screens: {
-      'smartphone': '480px',
-      'tablet': '640px',
-      'laptop': '1024px',
-      'desktop': '1280px',
+      iPhone: { max: '897px' }, // Mobile (matches max: iPhone 11 Pro Max landscape @ 896px).
+      iPad: { min: '898px', max: '1199px' }, // Tablet (matches max: iPad Pro @ 1112px).
+      MacBook: { min: '1200px' },
     },
   },
   plugins: [],
