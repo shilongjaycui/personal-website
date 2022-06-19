@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function DropdownItem(props) {
+export default function ProjectWindow(props) {
     return (
         <div 
             className="flex justify-center items-center rounded-md border-2 border-black shadow-inner
