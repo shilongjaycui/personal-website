@@ -6,24 +6,26 @@ import list from "./images/home/list.png";
 import cyborg_commando from "./images/home/cyborg_commando.png";
 
 function App() {
-  const MACBOOK_MIN_WIDTH = 1200
-  const [showNavMenu, setShowNavMenu] = useState(window.innerWidth >= MACBOOK_MIN_WIDTH)
-  const [listIconClicked, setListIconClicked] = useState(false)
+  const MACBOOK_MIN_WIDTH = 1200;
+  const [showNavMenu, setShowNavMenu] = useState(
+    window.innerWidth >= MACBOOK_MIN_WIDTH
+  );
+  const [listIconClicked, setListIconClicked] = useState(false);
 
   useEffect(() => {
     function handleResize() {
       if (window.innerWidth >= MACBOOK_MIN_WIDTH) {
-        setListIconClicked(false)
+        setListIconClicked(false);
       }
-      setShowNavMenu((window.innerWidth >= MACBOOK_MIN_WIDTH) || listIconClicked)
+      setShowNavMenu(window.innerWidth >= MACBOOK_MIN_WIDTH || listIconClicked);
     }
 
-    window.addEventListener('resize', handleResize)
+    window.addEventListener("resize", handleResize);
 
-    handleResize()
+    handleResize();
 
-    return () => window.removeEventListener('resize', handleResize)
-  })
+    return () => window.removeEventListener("resize", handleResize);
+  });
 
   return (
     <div className="w-screen h-screen">
@@ -32,18 +34,23 @@ function App() {
           src={list}
           alt="list"
           className="MacBook:h-0 iPad:h-1/3 iPhone:h-1/3 absolute left-10 flex ml-auto inset-y-1/3 cursor-pointer"
-          onClick={() => setListIconClicked((prevState) => {
-            return !prevState
-          })}
+          onClick={() =>
+            setListIconClicked((prevState) => {
+              return !prevState;
+            })
+          }
         />
-        <Link to="/" className="w-full h-full flex justify-center items-center cursor-auto">
+        <Link
+          to="/"
+          className="w-full h-full flex justify-center items-center cursor-auto"
+        >
           <h1 className="font-piazzolla text-white text-6xl font-bold hover:text-black cursor-pointer">
             Jay Cui
           </h1>
         </Link>
       </div>
       <div className="relative h-5/6">
-        {showNavMenu && (<NavMenu />)}
+        {showNavMenu && <NavMenu />}
         <img src={cyborg_commando} alt={"大佬"} className="absolute z-0" />
       </div>
     </div>
