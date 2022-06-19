@@ -14,7 +14,7 @@ export default function NavMenu() {
   return (
     <div
       className="absolute flex MacBook:flex-col iPad:flex-row iPhone:flex-row
-                    MacBook:w-full MacBook:h-1/3 iPad:w-full iPad:h-full iPhone:w-full iPhone:h-full"
+                    MacBook:w-full MacBook:h-1/3 iPad:w-full iPad:h-5/6 iPhone:w-full iPhone:h-5/6"
     >
       <div
         className="bg-red-800 opacity-75 
