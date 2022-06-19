@@ -52,9 +52,7 @@ function App() {
       </div>
       <div className="relative h-5/6">
         {showNavMenu && (<NavMenu updateShowProjects={updateShowProjects}/>)}
-        <img src={cyborg_commando} alt={"大佬"} className="absolute z-0" onClick={() => {  // TODO: fix this
-          updateShowProjects()
-        }}/>
+        <img src={cyborg_commando} alt={"大佬"} className="absolute z-0" />
       </div>
     </div>
   );
