@@ -4,10 +4,10 @@ import NavItem from "./NavItem";
 import CollapsibleNavItem from "./CollapsibleNavItem";
 import resume from "../documents/jay_cui_spring_2022.pdf";
 
-export default function NavMenu() {
+export default function NavMenu({ updateShowProjects }) {
   return (
     <div
-      className="absolute bg-red-800 
+      className="absolute bg-red-800 opacity-75
             MacBook:w-full MacBook:h-1/6 iPad:w-1/2 iPad:h-full iPhone:w-1/2 iPhone:h-full 
             z-10 flex justify-center items-center
             MacBook:flex-row iPad:flex-col iPhone:flex-col"
@@ -19,6 +19,7 @@ export default function NavMenu() {
       <CollapsibleNavItem
         label="Projects"
         items={["Music", "Dating", "Reading"]}
+        updateShowProjects={updateShowProjects}
       />
       <NavItem
         label="LinkedIn"
