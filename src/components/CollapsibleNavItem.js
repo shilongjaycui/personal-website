@@ -9,13 +9,12 @@ export default function CollapsibleNavItem(props) {
         <div className="relative">
             <div 
                 className="flex justify-center items-center
-                    w-48 h-24
+                    w-36 h-16
                     font-piazzolla text-white text-3xl
-                    hover:bg-stroke hover:bg-local"
+                    hover:bg-stroke hover:bg-contain"
                 {...getToggleProps()}
             >
                 {props.label}
-                <div className="absolute right-6">{isExpanded ? '↑' : '↓'}</div>
             </div>
             <div className="absolute top-20" {...getCollapseProps()}>
                 {items.map(item => (<DropdownItem label={item} />))}

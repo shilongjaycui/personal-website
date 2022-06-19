@@ -1,4 +1,3 @@
-import Header from '../components/Header';
 import StoryWindow from '../components/StoryWindow';
 import Korea from '../images/about/south_korea.png';
 import Japan from '../images/about/japan.png';
@@ -13,7 +12,6 @@ import accordion from '../images/about/accordion.png';
 export default function About() {
     return (
         <div className='bg-sky-800 h-full'>
-            <Header />
             <div className='flex flex-row justify-center items-baseline'>
                 <StoryWindow src={Korea} label='ethnic Korean'/>
                 <StoryWindow src={Japan} label='born in Japan'/>
