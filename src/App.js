@@ -9,6 +9,14 @@ function App() {
   const MACBOOK_MIN_WIDTH = 1200
   const [showNavMenu, setShowNavMenu] = useState(window.innerWidth >= MACBOOK_MIN_WIDTH)
   const [listIconClicked, setListIconClicked] = useState(false)
+  const [showProjects, setShowProjects] = useState(false)
+  const updateShowProjects = () => {
+    setShowProjects((prevState) => {
+      console.log('showProjects (before):', prevState)
+      console.log('showProjects (after):', !prevState)
+      return !prevState
+    })
+  }
 
   useEffect(() => {
     function handleResize() {
@@ -43,8 +51,10 @@ function App() {
         </Link>
       </div>
       <div className="relative h-5/6">
-        {showNavMenu && (<NavMenu />)}
-        <img src={cyborg_commando} alt={"大佬"} className="absolute z-0" />
+        {showNavMenu && (<NavMenu updateShowProjects={updateShowProjects}/>)}
+        <img src={cyborg_commando} alt={"大佬"} className="absolute z-0" onClick={() => {  // TODO: fix this
+          updateShowProjects()
+        }}/>
       </div>
     </div>
   );

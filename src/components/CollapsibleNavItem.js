@@ -3,7 +3,7 @@ import useCollapse from 'react-collapsed';
 import ProjectWindow from './ProjectWindow';
 
 export default function CollapsibleNavItem(props) {
-    const { getCollapseProps, getToggleProps, isExpanded } = useCollapse();
+    const { getCollapseProps, getToggleProps } = useCollapse();
     const items = props.items;
     return (
         <div className="relative">
