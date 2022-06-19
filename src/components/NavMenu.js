@@ -8,9 +8,9 @@ export default function NavMenu() {
   return (
     <div
       className="absolute bg-red-800 
-        MacBook:w-full MacBook:h-1/6 iPad:w-1/2 iPad:h-full iPhone:w-1/2 iPhone:h-full 
-        z-10 flex justify-center items-center
-        MacBook:flex-row iPad:flex-col iPhone:flex-col"
+            MacBook:w-full MacBook:h-1/6 iPad:w-1/2 iPad:h-full iPhone:w-1/2 iPhone:h-full 
+            z-10 flex justify-center items-center
+            MacBook:flex-row iPad:flex-col iPhone:flex-col"
     >
       <Link to="/about">
         <NavItem label="About" />
