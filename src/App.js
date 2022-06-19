@@ -12,6 +12,9 @@ function App() {
 
   useEffect(() => {
     function handleResize() {
+      if (window.innerWidth >= MACBOOK_MIN_WIDTH) {
+        setListIconClicked(false)
+      }
       setShowNavMenu((window.innerWidth >= MACBOOK_MIN_WIDTH) || listIconClicked)
     }
 

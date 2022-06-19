@@ -1,6 +1,6 @@
 import React from 'react';
 import useCollapse from 'react-collapsed';
-import DropdownItem from './DropdownItem';
+import ProjectWindow from './ProjectWindow';
 
 export default function CollapsibleNavItem(props) {
     const { getCollapseProps, getToggleProps, isExpanded } = useCollapse();
@@ -17,7 +17,7 @@ export default function CollapsibleNavItem(props) {
                 {props.label}
             </div>
             <div className="absolute top-20" {...getCollapseProps()}>
-                {items.map(item => (<DropdownItem label={item} />))}
+                {items.map(item => (<ProjectWindow label={item} />))}
             </div>
         </div>
     )
