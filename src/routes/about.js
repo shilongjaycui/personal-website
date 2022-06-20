@@ -14,8 +14,7 @@ export default function About() {
   return (
     <div className="relative w-screen h-screen">
       <Header />
-      <div className="bg-amber-400 h-1/6"></div>
-      <div className="bg-amber-400 MacBook:h-fit iPad:h-screen iPhone:h-screen">
+      <div className="bg-cyborg_commando bg-top bg-cover MacBook:h-fit iPad:h-screen iPhone:h-screen">
         <div className="flex flex-row justify-center items-baseline">
           <StoryWindow src={Korea} label="ethnic Korean" />
           <StoryWindow src={Japan} label="born in Japan" />
