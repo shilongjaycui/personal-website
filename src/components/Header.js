@@ -37,14 +37,13 @@ export default function Header() {
             })
           }
         />
-        <Link
-          to="/"
-          className="w-full h-full flex justify-center items-center cursor-auto"
+        <div
+          className="w-full h-full flex justify-center items-center"
         >
-          <h1 className="font-piazzolla text-white text-6xl font-bold hover:text-black cursor-pointer">
+          <Link to="/" className="font-piazzolla text-white text-6xl font-bold hover:text-black cursor-pointer">
             Jay Cui
-          </h1>
-        </Link>
+          </Link>
+        </div>
       </div>
       {showNavMenu && <NavMenu />}
     </>
