@@ -13,7 +13,7 @@ import accordion from "../images/about/accordion.png";
 export default function About() {
   return (
     <div className="relative w-screen h-screen">
-      <Header />
+      <Header hideNavMenu={true} />
       <div className="bg-cyborg_commando bg-top bg-cover MacBook:h-fit iPad:h-screen iPhone:h-screen">
         <div className="flex flex-row justify-center items-baseline">
           <StoryWindow src={Korea} label="ethnic Korean" />
