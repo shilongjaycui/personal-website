@@ -57,7 +57,7 @@ export default function About() {
             <StoryWindow src={Japan} label="born in Japan" onLaptop={onLaptop} />
           </div>
           <div className="flex flex-row justify-center items-baseline">
-            <StoryWindow src={China} label="Chinese citizen" onLaptop={onLaptop} />
+            <StoryWindow src={China} label="raised in China" onLaptop={onLaptop} />
             <StoryWindow src={US} label="living in the US" onLaptop={onLaptop} />
           </div>
           <div className="flex flex-row justify-center items-baseline">
