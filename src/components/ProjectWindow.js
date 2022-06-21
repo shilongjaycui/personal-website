@@ -11,14 +11,14 @@ export default function ProjectWindow(props) {
       <div
         className="flex justify-center items-center
                     w-full h-1/2
-                    font-piazzolla font-bold text-black text-3xl"
+                    font-piazzolla font-bold text-black MacBook:text-3xl iPad:text-2xl iPhone:text-base"
       >
         {props.name}
       </div>
       <div
         className="flex justify-center items-center
-                    w-full h-1/2
-                    font-piazzolla text-black"
+                    w-full h-1/2 MacBook:p-6 iPad:p-6 iPhone:p-3
+                    font-piazzolla text-black MacBook:text-2xl iPad:text-xl iPhone:text-sm"
       >
         {props.description}
       </div>

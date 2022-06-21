@@ -47,11 +47,11 @@ export default function NavMenu() {
         >
           <ProjectWindow
             name="Music"
-            description="Spotify recommender system"
+            description="We're under construction. Please come back later."
           />
           <ProjectWindow
-            name="project name"
-            description="project description"
+            name="N/A"
+            description="N/A"
           />
         </div>
       )}

@@ -37,7 +37,7 @@ export default function About() {
           <div className="flex flex-row justify-center items-baseline">
             <StoryWindow src={Korea} label="ethnic Korean" onLaptop={onLaptop} />
             <StoryWindow src={Japan} label="born in Japan" onLaptop={onLaptop} />
-            <StoryWindow src={China} label="Chinese citizen" onLaptop={onLaptop} />
+            <StoryWindow src={China} label="raised in China" onLaptop={onLaptop} />
             <StoryWindow src={US} label="living in the US" onLaptop={onLaptop} />
           </div>
           <div className="flex flex-row justify-center items-baseline">
