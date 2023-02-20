@@ -7,7 +7,7 @@ function App() {
     <div className="relative w-screen h-screen">
       <Header hideNavMenu={false} />
       <div className="absolute z-0 w-full h-full
-                      bg-cyborg_commando bg-top bg-cover"
+                      bg-stone_army bg-top bg-cover"
       ></div>
     </div>
   );

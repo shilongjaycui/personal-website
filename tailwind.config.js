@@ -10,6 +10,7 @@ module.exports = {
       backgroundImage: {
         'stroke': "url('/src/images/home/stroke.png')",  // downloaded from https://www.vhv.rs/viewpic/hbihbTJ_black-brush-stroke-png-transparent-png/
         'cyborg_commando': "url('/src/images/home/cyborg_commando.png')",
+        'stone_army': "url('/src/images/home/stone_army.png')",
       }
     },
     screens: {
