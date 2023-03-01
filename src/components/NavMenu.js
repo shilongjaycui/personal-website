@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import NavItem from "./NavItem";
 import ProjectWindow from "./ProjectWindow";
-import resume from "../documents/jay_cui_spring_2022.pdf";
+import resume from "../documents/jay-cui-winter-2023.pdf";
 
 export default function NavMenu() {
   const [showProjects, setShowProjects] = useState(false);
