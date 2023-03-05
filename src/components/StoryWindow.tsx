@@ -1,6 +1,12 @@
 import React from "react";
 
-export default function StoryWindow(props) {
+interface StoryWindowProps {
+  src: any;
+  label: string;
+  onLaptop: boolean;
+}
+
+export default function StoryWindow(props: StoryWindowProps) {
   return (
     <>
       {props.onLaptop ? (
