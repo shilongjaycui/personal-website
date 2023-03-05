@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import list from "../images/home/list.png";
+import list from '../images/home/list.png';
 import { Link } from "react-router-dom";
 import NavMenu from "./NavMenu";
 
