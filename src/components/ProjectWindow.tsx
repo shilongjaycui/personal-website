@@ -1,6 +1,11 @@
 import React from "react";
 
-export default function ProjectWindow(props) {
+interface ProjectWindowProps {
+  name: string;
+  description: string;
+}
+
+export default function ProjectWindow(props: ProjectWindowProps) {
   return (
     <div
       className="flex flex-col rounded-md border-2 border-black shadow-inner

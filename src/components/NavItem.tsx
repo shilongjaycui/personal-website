@@ -1,6 +1,13 @@
 import React from "react";
 
-export default function NavItem(props) {
+interface NavItemProps {
+  label: string;
+  items?: string[];
+  url?: string | any;
+  updateShowProjects?: () => void;
+}
+
+export default function NavItem(props: NavItemProps) {
   return (
     <a
       className="flex justify-center items-center 

@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
-import list from "../images/home/list.png";
+import list from '../images/home/list.png';
 import { Link } from "react-router-dom";
 import NavMenu from "./NavMenu";
 
-export default function Header(props) {
+interface HeaderProps {
+  hideNavMenu: boolean;
+}
+
+export default function Header(props: HeaderProps) {
   const MACBOOK_MIN_WIDTH = 1200;
   const [showNavMenu, setShowNavMenu] = useState(
     window.innerWidth >= MACBOOK_MIN_WIDTH
