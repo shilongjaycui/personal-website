@@ -6,6 +6,7 @@ import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as s3_deployment from 'aws-cdk-lib/aws-s3-deployment';
 import * as path from 'path';
 import { HttpMethods } from 'aws-cdk-lib/aws-s3';
+import * as route53 from 'aws-cdk-lib/aws-route53';
 
 export interface PersonalWebsiteProps extends StackProps {
   path: string;
@@ -16,10 +17,10 @@ export class PersonalWebsiteStack extends Stack {
   constructor(scope: Construct, id: string, props: PersonalWebsiteProps) {
     super(scope, id, props);
 
-    const { path } = props
+    const { path } = props;
 
     const personalWebsiteBucket = new s3.Bucket(this, 'shilongjaycui-personal-website-bucket', {
-      bucketName: 'shilongjaycui-personal-website-bucket',
+      bucketName: 'www.shilongjaycui.com',
       publicReadAccess: false,  // no public access, user must access via cloudfront
       removalPolicy: RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
@@ -33,7 +34,7 @@ export class PersonalWebsiteStack extends Stack {
       ],
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: 'index.html',
-    })
+    });
     const originAccessIdentity = new cloudfront.OriginAccessIdentity(this, "personalWebsiteBucketOAI")
     const personalWebsitePolicyStatement = new iam.PolicyStatement(
       {
@@ -45,8 +46,8 @@ export class PersonalWebsiteStack extends Stack {
           ),
         ],
       },
-    )
-    personalWebsiteBucket.addToResourcePolicy(personalWebsitePolicyStatement)
+    );
+    personalWebsiteBucket.addToResourcePolicy(personalWebsitePolicyStatement);
 
     const personalWebsiteDistribution = new cloudfront.CloudFrontWebDistribution(this, "personalWebsiteDistribution", {
       originConfigs: [
@@ -84,18 +85,34 @@ export class PersonalWebsiteStack extends Stack {
           responsePagePath: "/index.html",
         },
       ],
-    })
+    });
 
     new s3_deployment.BucketDeployment(this, "personalWebsiteBucketDeployment", {
       sources: [s3_deployment.Source.asset(path)],
       destinationBucket: personalWebsiteBucket,
       distribution: personalWebsiteDistribution,
     });
+
+    // Look up the zone based on domain name.
+    const hostedZone = route53.HostedZone.fromLookup(this, "baseZone", {
+      domainName: "shilongjaycui.com",
+    });
+
+    // Add the subdomain to Route 53
+    new route53.CnameRecord(this, 'test.baseZone', {
+      zone: hostedZone,
+      recordName: "www.shilongjaycui.com.",
+      domainName: personalWebsiteBucket.bucketDomainName,
+    });
   }
 }
 
 const app = new App();
 new PersonalWebsiteStack(app, 'PersonalWebsiteStack', {
+  env: {
+    account: process.env.CDK_DEFAULT_ACCOUNT,
+    region: process.env.CDK_DEFAULT_REGION,
+  },
   path: path.join(__dirname, '../../website'),
   // CloudFront only supports ACM certificates in the US East (N. Virginia) Region ( us-east-1 ).
   cloudfrontCertificationArn: "arn:aws:acm:us-east-1:961329577079:certificate/27b8aeba-19ba-4a1f-ae0d-a6df7ef66108",
