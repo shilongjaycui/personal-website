@@ -1,14 +1,15 @@
-import { App, Stack, StackProps, RemovalPolicy, Duration } from 'aws-cdk-lib';
+import { App, Stack, StackProps, RemovalPolicy } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
-import * as cloudfront_origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import * as s3_deployment from 'aws-cdk-lib/aws-s3-deployment';
 import * as path from 'path';
+import { HttpMethods } from 'aws-cdk-lib/aws-s3';
 
 export interface PersonalWebsiteProps extends StackProps {
-  path: string,
+  path: string;
+  cloudfrontCertificationArn?: string;
 }
 
 export class PersonalWebsiteStack extends Stack {
@@ -19,42 +20,84 @@ export class PersonalWebsiteStack extends Stack {
 
     const personalWebsiteBucket = new s3.Bucket(this, 'shilongjaycui-personal-website-bucket', {
       bucketName: 'shilongjaycui-personal-website-bucket',
+      publicReadAccess: false,  // no public access, user must access via cloudfront
+      removalPolicy: RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
+      cors: [
+        {
+          allowedHeaders: ["*"],
+          allowedMethods: [HttpMethods.GET],
+          allowedOrigins: ["*"],
+          exposedHeaders: [],
+        },
+      ],
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: 'index.html',
-      removalPolicy: RemovalPolicy.DESTROY,
     })
-    personalWebsiteBucket.addToResourcePolicy(
-      new iam.PolicyStatement(
-        {
-          effect: iam.Effect.ALLOW,
-          actions: ['s3:*'],
-          principals: [new iam.AnyPrincipal()],
-          resources: [`${personalWebsiteBucket.bucketArn}/*`]
-        },
-      )
-    )
-
-    const personalWebsiteDistribution = new cloudfront.Distribution(this, "personalWebsiteDistribution", {
-      priceClass: cloudfront.PriceClass.PRICE_CLASS_100,
-      defaultBehavior: {
-        origin: new cloudfront_origins.S3Origin(personalWebsiteBucket)
+    const originAccessIdentity = new cloudfront.OriginAccessIdentity(this, "personalWebsiteBucketOAI")
+    const personalWebsitePolicyStatement = new iam.PolicyStatement(
+      {
+        actions: ['s3:GetObject'],
+        resources: [personalWebsiteBucket.arnForObjects("*")],
+        principals: [
+          new iam.CanonicalUserPrincipal(
+            originAccessIdentity.cloudFrontOriginAccessIdentityS3CanonicalUserId
+          ),
+        ],
       },
-      comment: 'This is the CloudFront distribution for our personal website.'
+    )
+    personalWebsiteBucket.addToResourcePolicy(personalWebsitePolicyStatement)
+
+    const personalWebsiteDistribution = new cloudfront.CloudFrontWebDistribution(this, "personalWebsiteDistribution", {
+      originConfigs: [
+        {
+          s3OriginSource: {
+            s3BucketSource: personalWebsiteBucket,
+            originAccessIdentity: originAccessIdentity,
+          },
+          behaviors: [
+            {
+              viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+              allowedMethods: cloudfront.CloudFrontAllowedMethods.GET_HEAD,
+              compress: true,
+              isDefaultBehavior: true,
+            },
+          ],
+        },
+      ],
+      viewerCertificate: {
+        aliases: [
+          "shilongjaycui.com",
+          "www.shilongjaycui.com",
+        ],
+        props: {
+          acmCertificateArn: props.cloudfrontCertificationArn,
+          minimumProtocolVersion: "TLSv1.2_2021",
+          sslSupportMethod: "sni-only",
+        }
+      },
+      defaultRootObject: "index.html",
+      errorConfigurations: [
+        {
+          errorCode: 403,
+          responseCode: 200,
+          responsePagePath: "/index.html",
+        },
+      ],
     })
 
     new s3_deployment.BucketDeployment(this, "personalWebsiteBucketDeployment", {
-      destinationBucket: personalWebsiteBucket,
       sources: [s3_deployment.Source.asset(path)],
-      cacheControl: [
-        s3_deployment.CacheControl.maxAge(Duration.days(1))
-      ],
+      destinationBucket: personalWebsiteBucket,
       distribution: personalWebsiteDistribution,
-    })
+    });
   }
 }
 
 const app = new App();
 new PersonalWebsiteStack(app, 'PersonalWebsiteStack', {
   path: path.join(__dirname, '../../website'),
+  // CloudFront only supports ACM certificates in the US East (N. Virginia) Region ( us-east-1 ).
+  cloudfrontCertificationArn: "arn:aws:acm:us-east-1:961329577079:certificate/27b8aeba-19ba-4a1f-ae0d-a6df7ef66108",
 });
 app.synth();
