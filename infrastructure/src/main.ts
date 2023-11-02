@@ -8,6 +8,8 @@ import * as path from 'path';
 import { HttpMethods } from 'aws-cdk-lib/aws-s3';
 import * as route53 from 'aws-cdk-lib/aws-route53';
 
+const PERSONAL_WEBSITE_DOMAIN = "shilongjaycui.com"
+
 export interface PersonalWebsiteProps extends StackProps {
   path: string;
   cloudfrontCertificationArn?: string;
@@ -19,8 +21,8 @@ export class PersonalWebsiteStack extends Stack {
 
     const { path } = props;
 
-    const personalWebsiteBucket = new s3.Bucket(this, 'shilongjaycui-personal-website-bucket', {
-      bucketName: 'www.shilongjaycui.com',
+    const subdomainBucket = new s3.Bucket(this, 'subdomain-bucket', {
+      bucketName: `www.${PERSONAL_WEBSITE_DOMAIN}`,
       publicReadAccess: false,  // no public access, user must access via cloudfront
       removalPolicy: RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
@@ -33,13 +35,23 @@ export class PersonalWebsiteStack extends Stack {
         },
       ],
       websiteIndexDocument: 'index.html',
-      websiteErrorDocument: 'index.html',
+      websiteErrorDocument: '404.html',
     });
-    const originAccessIdentity = new cloudfront.OriginAccessIdentity(this, "personalWebsiteBucketOAI")
+    new s3.Bucket(this, 'root-domain-bucket', {
+      bucketName: PERSONAL_WEBSITE_DOMAIN,
+      publicReadAccess: false,
+      removalPolicy: RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
+      websiteRedirect: {
+        hostName: `www.${PERSONAL_WEBSITE_DOMAIN}`,
+        protocol: s3.RedirectProtocol.HTTPS,
+      },
+    });
+    const originAccessIdentity = new cloudfront.OriginAccessIdentity(this, "bucket-origin-access-identity")
     const personalWebsitePolicyStatement = new iam.PolicyStatement(
       {
         actions: ['s3:GetObject'],
-        resources: [personalWebsiteBucket.arnForObjects("*")],
+        resources: [subdomainBucket.arnForObjects("*")],
         principals: [
           new iam.CanonicalUserPrincipal(
             originAccessIdentity.cloudFrontOriginAccessIdentityS3CanonicalUserId
@@ -47,13 +59,13 @@ export class PersonalWebsiteStack extends Stack {
         ],
       },
     );
-    personalWebsiteBucket.addToResourcePolicy(personalWebsitePolicyStatement);
+    subdomainBucket.addToResourcePolicy(personalWebsitePolicyStatement);
 
-    const personalWebsiteDistribution = new cloudfront.CloudFrontWebDistribution(this, "personalWebsiteDistribution", {
+    const personalWebsiteDistribution = new cloudfront.CloudFrontWebDistribution(this, "cloudfront-web-distribution", {
       originConfigs: [
         {
           s3OriginSource: {
-            s3BucketSource: personalWebsiteBucket,
+            s3BucketSource: subdomainBucket,
             originAccessIdentity: originAccessIdentity,
           },
           behaviors: [
@@ -68,8 +80,8 @@ export class PersonalWebsiteStack extends Stack {
       ],
       viewerCertificate: {
         aliases: [
-          "shilongjaycui.com",
-          "www.shilongjaycui.com",
+          PERSONAL_WEBSITE_DOMAIN,
+          `www.${PERSONAL_WEBSITE_DOMAIN}`,
         ],
         props: {
           acmCertificateArn: props.cloudfrontCertificationArn,
@@ -89,20 +101,20 @@ export class PersonalWebsiteStack extends Stack {
 
     new s3_deployment.BucketDeployment(this, "personalWebsiteBucketDeployment", {
       sources: [s3_deployment.Source.asset(path)],
-      destinationBucket: personalWebsiteBucket,
+      destinationBucket: subdomainBucket,
       distribution: personalWebsiteDistribution,
     });
 
     // Look up the zone based on domain name.
     const hostedZone = route53.HostedZone.fromLookup(this, "baseZone", {
-      domainName: "shilongjaycui.com",
+      domainName: PERSONAL_WEBSITE_DOMAIN,
     });
 
     // Add the subdomain to Route 53
     new route53.CnameRecord(this, 'test.baseZone', {
       zone: hostedZone,
-      recordName: "www.shilongjaycui.com.",
-      domainName: personalWebsiteBucket.bucketDomainName,
+      recordName: `www.${PERSONAL_WEBSITE_DOMAIN}.`,
+      domainName: subdomainBucket.bucketDomainName,
     });
   }
 }
