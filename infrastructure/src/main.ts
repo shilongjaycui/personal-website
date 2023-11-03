@@ -8,6 +8,7 @@ import * as route53 from 'aws-cdk-lib/aws-route53';
 import * as route53targets from 'aws-cdk-lib/aws-route53-targets';
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
+import * as s3_deployment from 'aws-cdk-lib/aws-s3-deployment';
 
 const PERSONAL_WEBSITE_DOMAIN = "shilongjaycui.com"
 
@@ -28,6 +29,7 @@ export class PersonalWebsiteStack extends Stack {
       objectOwnership: s3.ObjectOwnership.BUCKET_OWNER_ENFORCED,
       encryption: s3.BucketEncryption.S3_MANAGED,
       autoDeleteObjects: true,
+      websiteIndexDocument: "index.html",
     });
     const originAccessIdentity = new cloudfront.OriginAccessIdentity(this, "origin-access-identity")
     const iamPolicyStatement = new iam.PolicyStatement(
@@ -96,6 +98,15 @@ export class PersonalWebsiteStack extends Stack {
         recordName: PERSONAL_WEBSITE_DOMAIN,
         target: route53.RecordTarget.fromAlias(new route53targets.CloudFrontTarget(cloudfrontDistribution)),
         zone: hostedZone,
+    });
+
+    new s3_deployment.BucketDeployment(this, 's3-bucket-deployment', {
+      destinationBucket: subdomainBucket,
+      sources: [s3_deployment.Source.asset(props.path)],
+      cacheControl: [
+        s3_deployment.CacheControl.maxAge(Duration.days(1)),
+      ],
+      distribution: cloudfrontDistribution,
     });
   }
 }
