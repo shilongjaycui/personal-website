@@ -22,7 +22,7 @@ export class PersonalWebsiteStack extends Stack {
     super(scope, id, props);
 
     const subdomainBucket = new s3.Bucket(this, 'subdomain-bucket', {
-      bucketName: `www.${PERSONAL_WEBSITE_DOMAIN}`,
+      bucketName: PERSONAL_WEBSITE_DOMAIN,
       publicReadAccess: false,  // no public access, user must access via cloudfront
       removalPolicy: RemovalPolicy.DESTROY,
       accessControl: s3.BucketAccessControl.PRIVATE,
