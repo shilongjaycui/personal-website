@@ -1,14 +1,14 @@
+import * as path from 'path';
 import { App, Stack, StackProps, RemovalPolicy, Duration } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as s3 from 'aws-cdk-lib/aws-s3';
-import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
-import * as path from 'path';
-import * as route53 from 'aws-cdk-lib/aws-route53';
-import * as route53targets from 'aws-cdk-lib/aws-route53-targets';
-import * as acm from 'aws-cdk-lib/aws-certificatemanager';
-import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import * as s3_deployment from 'aws-cdk-lib/aws-s3-deployment';
+import * as acm from 'aws-cdk-lib/aws-certificatemanager';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as cloudfront_origins from 'aws-cdk-lib/aws-cloudfront-origins';
+import * as route53 from 'aws-cdk-lib/aws-route53';
+import * as route53_targets from 'aws-cdk-lib/aws-route53-targets';
 
 const PERSONAL_WEBSITE_DOMAIN = "shilongjaycui.com"
 
@@ -86,7 +86,7 @@ export class PersonalWebsiteStack extends Stack {
       domainNames: [PERSONAL_WEBSITE_DOMAIN],
       defaultRootObject: 'index.html',
       defaultBehavior: {
-      origin: new origins.S3Origin(subdomainBucket, {
+      origin: new cloudfront_origins.S3Origin(subdomainBucket, {
           originAccessIdentity: originAccessIdentity
       }),
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
@@ -94,10 +94,15 @@ export class PersonalWebsiteStack extends Stack {
       },
     });
 
-    new route53.ARecord(this, 'ARecord', {
-        recordName: PERSONAL_WEBSITE_DOMAIN,
-        target: route53.RecordTarget.fromAlias(new route53targets.CloudFrontTarget(cloudfrontDistribution)),
-        zone: hostedZone,
+    new route53.ARecord(this, 'DomainARecord', {
+      recordName: PERSONAL_WEBSITE_DOMAIN,
+      target: route53.RecordTarget.fromAlias(new route53_targets.CloudFrontTarget(cloudfrontDistribution)),
+      zone: hostedZone,
+    });
+    new route53.CnameRecord(this, 'SubdomainCnameRecord', {
+      recordName: `www.${PERSONAL_WEBSITE_DOMAIN}.`,
+      domainName: PERSONAL_WEBSITE_DOMAIN,
+      zone: hostedZone,
     });
 
     new s3_deployment.BucketDeployment(this, 's3-bucket-deployment', {
